@@ -9,13 +9,13 @@ from tensorflow.keras.models import load_model
 model = load_model("penyakitcabai/BestModelUas.keras")
 
 @csrf_exempt
-def index(request):  
+def index(request):
     if request.method == 'POST':  
         file_form = forms.UploadFileFrom(request.POST, request.FILES)  
         if file_form.is_valid():  
             filepath = utils.handle_uploaded_file(request.FILES['image'])
             result = utils.do_identification(model, filepath)
-            response = HttpResponse(json.dumps({ 'message' : 'success', 'hasil' : result }), content_type='application/json')
+            response = HttpResponse(json.dumps({ 'message' : 'success', 'data' : result }), content_type='application/json')
             return response 
         else:
             response = HttpResponse(json.dumps({ 'message' : 'Form tidak valid', 'detail' : file_form.errors }), content_type='application/json', status=400)
